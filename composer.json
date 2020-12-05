@@ -1,0 +1,18 @@
+{
+    "name": "eru123/linker",
+    "description": "PHP Framework for building REST API",
+    "authors": [
+        {
+            "name": "eru123",
+            "email": "yeoligoakino@gmail.com"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "Linker\\": "src/"
+        }
+    },
+    "require": {
+        "vlucas/phpdotenv": "^5.2"
+    }
+}

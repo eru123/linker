@@ -1,0 +1,6 @@
+/vendor
+*.env
+/index.php
+/pages
+/test.php
+/public
