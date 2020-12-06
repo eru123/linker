@@ -134,7 +134,6 @@ class Auto {
             }
         } elseif($return404) {
             header('HTTP/1.0 404'); 
-            // throw new \Exception("Linker Framework: Router::Auto() INVALID_URI or FILE_NOT_FOUND. URI=\"$this->real_path\". PATH=\"$file\"");
         } else {
             return NULL;
         }
