@@ -12,18 +12,60 @@ class Auto {
     public string $error = ""; // case-sensitive (nospaces) format -> "/error.php"
     public int $level = 0;
     public bool $duplicate = false;
+    public string $real_path = "";
 
-    public string $real_path;
-
+    private bool $useMarkdown = false;
     private string $default_basedir;
     private string $default_index;
     private string $default_mode; 
-
+    private string $renderedFile = "";
+    private string $markdownCss = "";
     public function __construct(\Linker\Application $app){
         $this->app = $app;
         $this->default_basedir = $this->basedir;
         $this->default_index = $this->index;
         $this->default_mode = $this->mode;
+        $this->markdownCss = "
+            html {
+                padding: 0 1em;
+                background: #f2f2f2;
+            }
+            body {
+                box-sizing: border-box;
+                margin: 0;
+                color: #333;
+                font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+                padding: 1em;
+                max-width: 600px;
+                margin: 2em auto;
+                border: 1px solid #ccc;
+                border-radius: 10px;
+                background: #fff;
+                overflow: hidden;
+            }
+            pre {
+                padding: .5em 1em;
+                max-width: 100%;
+                overflow-x: auto;
+            }
+            pre, code {
+                background: #dedede;
+            }
+            p code {
+                padding: 0 .5em;
+            }
+            a {
+                color: #1e90ff;
+                text-decoration:none;
+            }
+            a:hover {
+                color:#116bc5;
+                text-decoration: underline;
+            }
+            p {
+                font-weight: normal;
+            }
+        ";
     }
     public function path() : string {
         $path = $this->mode == "query" 
@@ -54,7 +96,6 @@ class Auto {
             $this->level = $this->level >= $uri_pcscnt ? $uri_pcscnt - 1: $this->level;
             $this->level = $this->level < 0 ? $this->default_level : $this->level;
             
-            // return $this->level;
             $uri_pcsnew = [];
 
             for ($i=$this->level + 1; $i < $uri_pcscnt; $i++) { 
@@ -110,6 +151,29 @@ class Auto {
         $this->error = "/".trim($this->error,"/");
         return $this->error;
     }
+    public function useMarkdown(){
+        $this->useMarkdown = true;
+    }
+    public function addMarkdownCss(string $cssFilePath){
+        if(file_exists($cssFilePath) && preg_match('/.css$/',$cssFilePath)){
+            $this->markdownCss = (string) @file_get_contents($cssFilePath);
+        }
+        return FALSE;
+    }
+    public function markdownInject(string $md){
+        return '
+            <!DOCTYPE html>
+            <html lang="en">
+            <head>
+                <meta charset="UTF-8">
+                <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                <title>'.ucwords(str_replace(".md","",basename(strtolower($this->renderedFile)))).'</title>
+                <style>'.$this->markdownCss.'</style>
+            </head>
+            <body>'.$md.'</body>
+            </html>
+        ';
+    }
     public function init(bool $return = false, bool $return404 = true) {
         $files = (array) $this->filematches();
         $file = "";
@@ -125,11 +189,24 @@ class Auto {
             $file = $this->basedir.$this->error;
         }
         if(file_exists($file)){
+            $this->renderedFile = $file;
             $linker = $this->app;
             if($return){
-                return $file;
+                if($this->useMarkdown && preg_match('/.md$/',strtolower($file))){
+                    $mdparser = new \Parsedown();
+                    $mdparser->setSafeMode(true);
+                    return $this->markdownInject($mdparser->text(@file_get_contents($file)));
+                } else {
+                    return $file;
+                }
             } else {
-                ($this->duplicate ? include($file) : include_once($file));
+                if($this->useMarkdown && preg_match('/.md$/',strtolower($file))){
+                    $mdparser = new \Parsedown();
+                    $mdparser->setSafeMode(true);
+                    echo $this->markdownInject( $mdparser->text(@file_get_contents($file)));
+                } else {
+                    ($this->duplicate ? include($file) : include_once($file));
+                }
                 return $file;
             }
         } elseif($return404) {

@@ -1,6 +1,7 @@
 # Linker Framework
 PHP Framework for Building REST API
-
+### Documentation
+Documentation coming soon.
 # Install 
 ### Install Via Composer
 ```bash
@@ -14,6 +15,3 @@ cd linker
 composer install
 ```
 Then send pull request
-
-## Documentation
-Coming soon.

@@ -22,7 +22,4 @@
     <Files composer.*>
         Require all denied
     </Files>
-
-    # ErrorDocument 403 http://localhost/linker
-    # ErrorDocument 404 http://localhost/linker/index.php
 </IfModule>
