@@ -13,7 +13,7 @@ class Auto {
     public int $level = 0;
     public bool $duplicate = false;
 
-    private string $real_path;
+    public string $real_path;
 
     private string $default_basedir;
     private string $default_index;
@@ -87,18 +87,16 @@ class Auto {
             
             $isKeyExt = preg_match($regex,$key) ? TRUE : $isKeyExt;
             $isIndexExt = preg_match($regex,$index) ? TRUE : $isIndexExt;
-
             if ($isKeyExt && !in_array($base.$key,$match_filekeys) && file_exists($base.$key)) {
                 $match_filekeys[] = $base.$key;
             } elseif(!$isKeyExt && file_exists("$base$key$ext")) {
                 $match_filekeys[] = "$base$key$ext";
             }
-
             if($isKeyDir){
                 if(count($indexes) > 1){
                     foreach($indexes as $ndx){
-                        if(file_exists("$base$key$ndx$ext")){
-                            $match_dirkeys[] = "$base$key$ndx$ext";
+                        if(file_exists("$base$key/$ndx$ext")){
+                            $match_dirkeys[] = "$base$key/$ndx$ext";
                         }
                     }
                 } elseif(file_exists("$base$key/$index$ext")){
@@ -106,7 +104,6 @@ class Auto {
                 }
             }
         }
-
         return array_merge($match_filekeys,$match_dirkeys);
     }
     public function error(){
@@ -117,7 +114,6 @@ class Auto {
         $files = (array) $this->filematches();
         $file = "";
         $found = false;
-
         if(count($files) > 0){
             foreach($files as $filetest){
                 if(!$found && file_exists($filetest)){
@@ -128,7 +124,6 @@ class Auto {
         } elseif (!is_dir($this->basedir.$this->error()) && file_exists($this->basedir.$this->error)){
             $file = $this->basedir.$this->error;
         }
-        
         if(file_exists($file)){
             $linker = $this->app;
             if($return){
