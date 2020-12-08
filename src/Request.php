@@ -20,7 +20,7 @@ class Request {
 
         return "/".trim($path,"/");
     }
-    final public static function query(?string $method, string $str, $callback = null) : array {
+    public static function query(?string $method, string $str, $callback = null) : array {
         
         $keys = explode(" ", trim($str));
 		$fkey = [];
@@ -54,7 +54,7 @@ class Request {
 
         return array();
     }
-    final private static function _request(?string $method, array $default = []){
+    private static function _request(?string $method, array $default = []){
         $method = trim(strtolower((string)$method));
 
         $REQ = $default;
@@ -86,7 +86,7 @@ class Request {
         }
         return $REQ;
     }
-	final private static function match(array $arr,?string $method) : bool {
+	private static function match(array $arr,?string $method) : bool {
         
         $REQ = self::_request($method,[]);
         
@@ -105,7 +105,7 @@ class Request {
 		}
 		return TRUE;
 	}
-	final private static function translate(array $arr,string $method) : array {
+	private static function translate(array $arr,string $method) : array {
         $REQ = self::_request($method,[]);
 		$res = [];
 		foreach ($arr as $k => $v) {
@@ -117,7 +117,7 @@ class Request {
 		}
 		return $res;
     }
-    final private static function json(array $a,string $accessControlAllowOrigin = "*") : void {
+    private static function json(array $a,string $accessControlAllowOrigin = "*") : void {
 		header('Access-Control-Allow-Origin: $accessControlAllowOrigin');
 		header('Content-Type: application/json');
 		echo json_encode($a);
