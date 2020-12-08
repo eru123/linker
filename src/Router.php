@@ -20,6 +20,7 @@ class Router {
     private string $default_mode; 
     private string $renderedFile = "";
     private string $markdownCss = "";
+    
     public function __construct(\Linker\Application $app){
         $this->app = $app;
         $this->default_basedir = $this->basedir;

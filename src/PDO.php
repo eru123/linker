@@ -11,7 +11,7 @@ class PDO {
     public function __construct(?\Linker\Application $app = NULL){
         if($app){
             $this->connectByApp($app->config);
-            $this->app = $app;
+			$this->app = $app;
         }
     }
     public function connect(string $user,string $pass, string $host, string $db){
@@ -22,10 +22,10 @@ class PDO {
         return $pdo;
     }
     protected function connectByApp(object $config){
-        $user = @$config->BD_USER ?? "root";
-        $pass = @$config->DB_PASS ?? "";
-        $host = @$config->DB_HOST ?? "localhost";
-        $db = @$config->DB_NAME ?? "mysql";
+        $user = $config->DB_USER ?? "root";
+        $pass = $config->DB_PASS ?? "";
+        $host = $config->DB_HOST ?? "localhost";
+        $db = $config->DB_NAME ?? "mysql";
         return $this->connect($user,$pass,$host,$db);
     }
     public function setupSchema(array $schema = []): bool{

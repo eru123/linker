@@ -4,13 +4,12 @@
 namespace Linker;
 
 class DBModel {
-    public \Linker\PDO $pdo;
+    protected \Linker\PDO $pdo;
     private string $tb;
 
     public function __construct(string $table, \Linker\PDO $pdo){
         $this->tb = $table;
         $this->pdo = $pdo;
-        $this->pdo->table($this->tb);
     }
     private function table(){
         $this->pdo->table($this->tb);
@@ -48,7 +47,7 @@ class DBModel {
         $result = $this->row($find,$advance);
         
         foreach($columns as $col){
-            $fresult = $result[$col] ?? NULL;
+            $fresult[$col] = $result[$col] ?? NULL;
         }
 
         return $fresult;
