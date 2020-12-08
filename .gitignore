@@ -1,6 +1,8 @@
 /vendor
 *.env
+/config.php
 /index.php
 /pages
 /test.php
 /public
+/refs
