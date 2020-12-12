@@ -11,9 +11,7 @@ class Uploader {
     public function __construct(array $config = []){
         $this->dir = $config["dir"] ?? $this->dir;
         $this->exts = $config["exts"] ?? $this->exts;
-        $this->mime = $config["mime"] ?? $this->mime;
         $this->max_size = $config["max_size"] ?? $this->max_size;
-
 
         $this->dir = rtrim($this->dir,"/")."/";
     }

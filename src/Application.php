@@ -7,12 +7,14 @@ class Application {
     public ?\Linker\Router $router = NULL;
     public ?\Linker\PDO $pdo = NULL;
     public \Linker\Request $request; 
+    public \Linker\Uploader $upload; 
+
 
     private bool $use_env = false;
     private bool $use_config = false;
     private bool $use_router = false;
     private bool $use_pdo = false;
-    private bool $use_upload = false;
+    private bool $use_uploader = false;
     private bool $use_download = false;
     private bool $use_parser = false;
     private string $rootdir = './';
@@ -99,5 +101,9 @@ class Application {
     }
     public function include(string $file,bool $duplicate = false){
         ($duplicate ? include($file) : include_once($file));
+    }
+    public function useUploader(array $config = []){
+        $this->upload = new \Linker\Uploader($config);
+        return $this->upload;
     }
 }
