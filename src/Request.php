@@ -122,9 +122,9 @@ class Request {
 		header('Content-Type: application/json');
 		echo json_encode($a);
 	}
-	public static function resolve(array $res, array $default = []) : void {
+	public static function resolve(array $res, array $default = [],$cors = "*") : void {
 		if (count($res) <= 0)
 			$res = $default;
-		self::json($res);
+		self::json($res,$cors);
 	}
 }
