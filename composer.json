@@ -1,6 +1,7 @@
 {
     "name": "eru123/linker",
     "description": "PHP Framework for building REST API",
+    "license": "Apache-2.0",
     "authors": [
         {
             "name": "eru123",
