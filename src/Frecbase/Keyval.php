@@ -10,7 +10,7 @@ class Keyval {
         $this->file = $file;
         $this->file_init();
     }
-    public static function clear(){
+    public function clear(){
         FS::fwrite($this->file,"<?php\n\$data = [];\n");
     }
     private function file_init(){

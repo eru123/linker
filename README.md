@@ -15,3 +15,5 @@ cd linker
 composer install
 ```
 Then send pull request
+## Example/Template
+ - [Public Filehost](https://github.com/eru123/linker-example-filehost)
