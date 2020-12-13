@@ -8,3 +8,4 @@ public
 refs
 uploads
 src/NoEngine.php
+*.log
