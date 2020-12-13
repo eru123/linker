@@ -2,6 +2,7 @@
     "name": "eru123/linker",
     "description": "PHP Framework for building REST API",
     "license": "Apache-2.0",
+    "minimum-stability": "stable",
     "authors": [
         {
             "name": "eru123",
