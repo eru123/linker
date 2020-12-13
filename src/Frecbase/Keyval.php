@@ -65,6 +65,13 @@ class Keyval {
         };
         return $get($this->file,$key,$default);
     }
+    public function all($default = NULL){
+        $get = function(string $file,$default){
+            include($file);
+            return isset($data) ? $data : $default;
+        };
+        return $get($this->file,$default);
+    }
     public function del(string $key){
         $key = self::filter_key($key);
         FS::fappend($this->file,"unset(\$data['$key']);\n");
