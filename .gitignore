@@ -7,5 +7,8 @@ test.php
 public
 refs
 uploads
-src/NoEngine.php
 *.log
+composer.lock
+config
+core
+.htaccess
