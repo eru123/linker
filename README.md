@@ -2,15 +2,22 @@
 PHP Framework for Building REST API
 ### Documentation
 Documentation coming soon.
-# Install 
-### Install via Linker installer (Recommended)
+# Installation
+## Creating Projects
+### Creating project with Linker installer
 ```bash
 composer global require eru123/linker-installer
 linker create <project_name>
 cd <project_name>
 ```
-### Install Via Composer
+### Create project with composer
+```bash
+composer create-project eru123/linker-template <project_name>
+cd <project_name>
+```
+## Installing core library
 Do this if you know how core files works
+### Install Via Composer
 ```bash
 composer require eru123/linker
 ```
