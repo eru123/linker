@@ -33,8 +33,17 @@ class Application {
         if(isset($config["uploader"]) && @$config["uploader"]["download"] === TRUE)
             $this->download = new $class["DOWNLOAD"]();
 
-
-
+        // Frecbase Keyval
+        if(isset($config["frecbase"]) && @$config["frecbase"]["keyval"] === TRUE)
+            $this->kv = new $class["KV"]();
+        
+        // Request Query
+        if(isset($config["request"]) && @$config["request"]["query"] === TRUE)
+            $this->query = new $class["QUERY"]();
+        
+        // Request URI
+        if(isset($config["request"]) && @$config["request"]["uri"] === TRUE)
+            $this->uri = new $class["URI"]();
 
         // Router
         if(isset($config["router"]) && @$config["router"]["use"] === TRUE){
