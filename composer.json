@@ -18,7 +18,7 @@
         "php": "^8.0",
         "eru123/linker-router": "^1.0",
         "eru123/linker-filesystem": "^1.01",
-        "eru123/linker-frecbase": "^1.0",
+        "eru123/linker-frecbase": "^1.10",
         "eru123/linker-db": "^1.0",
         "eru123/linker-request": "^1.0",
         "eru123/linker-uploader": "^1.0"
