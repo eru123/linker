@@ -1,26 +1,22 @@
 {
-    "name": "eru123/linker",
+    "name": "linker/linker",
     "description": "PHP Framework for building REST API",
+    "keywords": ["linker","linking","rest","api","framework"],
+    "type": "library",
     "license": "Apache-2.0",
-    "minimum-stability": "stable",
     "authors": [
         {
             "name": "eru123",
             "email": "yeoligoakino@gmail.com"
         }
     ],
+    "minimum-stability": "stable",
+    "require": {
+        "php": "^7.4||^8.0"
+    },
     "autoload": {
         "psr-4": {
             "Linker\\": "src/"
         }
-    },
-    "require": {
-        "php": "^8.0",
-        "eru123/linker-router": "^1.0",
-        "eru123/linker-filesystem": "^1.01",
-        "eru123/linker-frecbase": "^1.10",
-        "eru123/linker-db": "^1.0",
-        "eru123/linker-request": "^1.0",
-        "eru123/linker-uploader": "^1.0"
     }
 }
