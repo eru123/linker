@@ -52,12 +52,24 @@ class Application {
             if(@$config["router"]["render"] == TRUE ){
                 $router_dir = rtrim($config["router"]["dir"],"/")."/";
                 if(is_file((string) $route["path"])){
+                    $mime = $class["FS"]::mime_content_type($route["path"]);
+                    if(
+                        $mime !== FALSE && 
+                        is_string($mime) &&
+                        !preg_match('/text/i',$mime)
+                    ) header("Content-Type: $mime");
                     include_once $route["path"];
                 } elseif(
                     isset($config["router"]["error"]) && 
                     is_string($config["router"]["error"]) && 
                     is_file($router_dir.$config["router"]["error"])
-                ){
+                ){  
+                    $mime = $class["FS"]::mime_content_type($router_dir.$config["router"]["error"]);
+                    if(
+                        $mime !== FALSE && 
+                        is_string($mime) &&
+                        !preg_match('/text/i',$mime)
+                    ) header("Content-Type: $mime");
                     include_once $router_dir.$config["router"]["error"];
                 } else die("PAGE NOT FOUND!");
             }
