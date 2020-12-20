@@ -3,7 +3,7 @@
 namespace Linker\FileSystem;
 
 class FileSystem {
-    final public static function mkdir($dir,$m=0700) {
+    public static function mkdir($dir,$m=0700) {
 		if (is_array($dir)) {
 			foreach ($dir as $k => $v) $dir[$k] = self::mkdir($v);
 			return $dir;
@@ -12,7 +12,7 @@ class FileSystem {
 			if (mkdir($dir,$m))	return TRUE;
 		}
 	}
-	final public static function scandir($dir){
+	public static function scandir($dir){
 		$path = rtrim($dir,'/').'/';
 		if(!is_dir($dir)) return array();
 		$dir = scandir($dir);
@@ -24,7 +24,7 @@ class FileSystem {
 		}
 		return $res;
 	}
-	final public static function scandirTree(string $dir){
+	public static function scandirTree(string $dir){
 		$base = self::scandir($dir);
 		$tmp = $base;
 		foreach ($base as $v) {
@@ -37,7 +37,7 @@ class FileSystem {
 		}
 		return $tmp;
     }
-    final public static function tree(string $dir){
+    public static function tree(string $dir){
 		$base = self::scandir($dir);
 		$tmp = $base;
 		foreach ($base as $k => $v) {
@@ -50,7 +50,7 @@ class FileSystem {
 		}
 		return $tmp;
     }
-    final public static function index(string $dir){
+    public static function index(string $dir){
 		$base = self::scandir($dir);
 		$tmp = $base;
 		foreach ($base as $k => $v) {
@@ -73,7 +73,7 @@ class FileSystem {
 		}
 		return $tmp;
     }
-	final public static function del($p){
+	public static function del($p){
 		if (is_array($p) && count($p) > 0) {
 			foreach ($p as $key => $value) $p[$key] = self::del($value);
 			return $p;
@@ -88,7 +88,7 @@ class FileSystem {
 		}
 		return FALSE;
 	}
-	final public static function write(string $f,string $data='',string $m='a') : bool {
+	public static function write(string $f,string $data='',string $m='a') : bool {
         $m = trim(strtolower($m));
 		if ($m == 'a') {
 			if (file_exists($f)) {
@@ -107,10 +107,27 @@ class FileSystem {
             return self::write($f,$data,'a');
         }
     }
-    final public static function fwrite(string $f,string $data='') : bool {
+    public static function fwrite(string $f,string $data='') : bool {
         return self::write($f,$data,'w');
     }
-    final public static function fappend(string $f,string $data='') : bool {
+    public static function fappend(string $f,string $data='') : bool {
         return self::write($f,$data,'a');
+	}
+	public static function mime_content_type(string $filename) : mixed {
+		$realpath = realpath( $filename );
+
+		if(!is_file($realpath)) return FALSE;
+
+        if ($realpath
+			&& function_exists( 'finfo_file' )
+			&& function_exists( 'finfo_open' )
+			&& defined('FILEINFO_MIME_TYPE')
+        ) {
+        	return finfo_file( finfo_open( FILEINFO_MIME_TYPE ), $realpath );
+        } elseif ( function_exists( 'mime_content_type' ) ) {
+        	return mime_content_type( $realpath );
+		}
+		
+        return FALSE;
 	}
 }
