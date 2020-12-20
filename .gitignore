@@ -12,3 +12,4 @@ composer.lock
 config
 core
 .htaccess
+/dist/
