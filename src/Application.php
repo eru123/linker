@@ -49,8 +49,18 @@ class Application {
         if(isset($config["router"]) && @$config["router"]["use"] === TRUE){
             $route = (new $class["ROUTER"]($config["router"]))->result();
             $this->route = (object) $route;
-            if(@$config["router"]["render"] == TRUE && is_file((string) $route["path"]))
-                include_once $route["path"];
+            if(@$config["router"]["render"] == TRUE ){
+                $router_dir = rtrim($config["router"]["dir"],"/")."/";
+                if(is_file((string) $route["path"])){
+                    include_once $route["path"];
+                } elseif(
+                    isset($config["router"]["error"]) && 
+                    is_string($config["router"]["error"]) && 
+                    is_file($router_dir.$config["router"]["error"])
+                ){
+                    include_once $router_dir.$config["router"]["error"];
+                } else die("PAGE NOT FOUND!");
+            }
         }
     }
 }
