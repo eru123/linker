@@ -15,7 +15,7 @@ class Auto extends Request {
         $this->load_exts($config);
         $this->load_dir($config);
         $this->load_level($config);
-        $this->$exclude = $config["exclude"] ?? $this->exclude;
+        $this->exclude = $config["exclude"] ?? $this->exclude;
     }
     // Fix indexes
     private function load_index(array $config) : void {
