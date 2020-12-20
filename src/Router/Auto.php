@@ -6,6 +6,7 @@ class Auto extends Request {
     private array $params = [];
     private array $index = [];
     private array $exts = [];
+    private array $exclude = [];
     private string $dir = "";
     private string $path = "";
     private int $level = 0;
@@ -14,6 +15,7 @@ class Auto extends Request {
         $this->load_exts($config);
         $this->load_dir($config);
         $this->load_level($config);
+        $this->$exclude = $config["exclude"] ?? $this->exclude;
     }
     // Fix indexes
     private function load_index(array $config) : void {
@@ -128,6 +130,14 @@ class Auto extends Request {
                 }
             }
             $this->path = $path;
+            
+            foreach($this->exclude as $regex){
+                if(preg_match($regex,$this->path)){
+                    $this->path = "";
+                    return FALSE;
+                }
+            }
+
             return $path;
         }
         return FALSE;
