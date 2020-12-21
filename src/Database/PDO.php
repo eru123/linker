@@ -12,7 +12,22 @@ class PDO {
             $this->connectByConfig($config); 
         } elseif(is_object($config)) {
             $this->connectByApp($config);
-        }
+		}
+		
+		if(isset($config["schema"]) && is_array($config["schema"]) && count($config["schema"])){
+			$schema = isset($config["schema_method"]) ? $config["schema_method"] : $schema = "dynamic";
+			switch ($schema) {
+				case 'normal':
+					$this->setupSchema($config["schema"]);
+					break;
+				case 'force':
+					$this->forceSetupSchema($config["schema"]);
+					break;
+				default:
+					$this->alteredSchema($config["schema"]);
+					break;
+			}
+		}
     }
     public function connect(string $user,string $pass, string $host, string $db) : \PDO {
         $dsn = "mysql:host=$host;dbname=$db";
