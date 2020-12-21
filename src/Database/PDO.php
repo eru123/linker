@@ -34,8 +34,17 @@ class PDO {
         $host = $config["host"] ?? "";
         $db = $config["db"] ?? "";
         return $this->connect($user,$pass,$host,$db);
-    }
-    public function setupSchema(array $schema = []): bool{
+	}
+	public function columns(string $table) {
+		$columns = [];
+		$rs = $this->pdo->query("SELECT * FROM $table LIMIT 0");
+		for ($i = 0; $i < $rs->columnCount(); $i++) {
+			$col = $rs->getColumnMeta($i);
+			$columns[] = $col['name'];
+		}
+		return $columns;
+	}
+	public function setupSchema(array $schema = []): bool{
 		// SCHEMA - { table: [column,...]}
         $schema = $schema ?? $this->schema;
 		$query = "";
@@ -90,9 +99,59 @@ class PDO {
 
 		($this->pdo)->exec($query);
 		return TRUE;
-    }
-    public function table(string $table): void{
+	}
+	public function alteredSchema(array $schema = []) {
+		$u = [];
+		$r = [];
+		$query = "";
 
+		foreach($schema as $table => $columns) if(!$this->is_table($table)) $u[$table] = $columns; else $r[$table] = $columns;
+
+		if(count($u) > 0) $this->setupSchema($u);
+
+		if(count($r) > 0){
+			foreach ($r as $t => $c) {
+				// delete - ALTER TABLE `module_column` DROP COLUMN `module_id`
+				// add - ALTER TABLE emails ADD <column name> varchar(60)
+				$cs = $this->columns($t);
+				$primary_key = false; // DEFAULT - Automatically set to true if id column is exists;
+				$add = ""; 
+				$drop = "";
+				foreach ($c as $cl) {
+					if(!in_array($cl,$cs)){
+						if ($cl === "id") {
+							$primary_key = true;
+							$add .= "ADD id int(11) AUTO_INCREMENT PRIMARY KEY,";
+						} else {
+							$add .= "ADD $cl LONGTEXT NOT NULL,";
+						}
+					}
+				}
+
+				foreach($cs as $c1) {
+					if(!in_array($c1,$c)) {
+						$drop .= "DROP COLUMN $c1,";
+					}
+				}
+
+				$add = rtrim($add, ",").",";
+				$drop = rtrim($drop, ",");
+				$data = rtrim("$add$drop",",");
+				if(strlen($data) > 0) $query .= "ALTER TABLE $t $data;";
+			}
+			if(strlen($query) > 0) ($this->pdo)->exec($query);
+		}
+		return TRUE;
+	}
+	public function is_table(string $table){
+		try{
+			$this->pdo->query("SELECT 1 FROM $table");
+		} catch (\PDOException $e){
+			return false;
+		}
+		return true;
+	}
+	public function table(string $table): void{
 		$this->tb = $table;
 	}
 	public function createData(array $data): bool{
