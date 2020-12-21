@@ -12,7 +12,9 @@ class Model {
         $this->pdo = $pdo;
     }
     private function table(){
-        $this->pdo->table($this->tb);
+        if($this->pdo->is_table($this->tb)){
+            $this->pdo->table($this->tb);
+        } throw new \Exception("Failed to access $this->tb table");
     }
     public function new(array $data){
         $this->table();
