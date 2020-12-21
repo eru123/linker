@@ -1,7 +1,7 @@
 <?php
 
 
-namespace Linker\Database\PDO;
+namespace Linker\PDO;
 
 class Model {
     protected \Linker\Database\PDO $pdo;
