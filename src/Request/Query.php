@@ -28,7 +28,7 @@ class Query {
             }
 
             return $params;
-        }
+        } elseif($params !== FALSE) return $params;
 
         return FALSE;
     }
