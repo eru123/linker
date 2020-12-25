@@ -53,6 +53,7 @@ class Application {
                 $router_dir = rtrim($config["router"]["dir"],"/")."/";
                 if(is_file((string) $route["path"])){
                     $mime = $class["FS"]::mime_content_type($route["path"]);
+                    if(pathinfo((string) $route["path"], PATHINFO_EXTENSION) == "js") $mime = "application/javascript";
                     if(
                         $mime !== FALSE && 
                         is_string($mime) &&
