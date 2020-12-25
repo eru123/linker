@@ -113,7 +113,7 @@ class FileSystem {
     public static function fappend(string $f,string $data='') : bool {
         return self::write($f,$data,'a');
 	}
-	public static function mime_content_type(string $filename) : mixed {
+	public static function mime_content_type(string $filename) {
 		$realpath = realpath( $filename );
 
 		if(!is_file($realpath)) return FALSE;

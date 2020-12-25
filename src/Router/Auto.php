@@ -56,7 +56,7 @@ class Auto extends Request {
         $this->level = $level;
     }
     // Test all exts from given path 
-    private function mock_exts(string $path) : mixed {
+    private function mock_exts(string $path) {
         foreach($this->exts as $ext){
             if(file_exists("$path.$ext")){
                 return "$path.$ext";
@@ -77,7 +77,7 @@ class Auto extends Request {
         return $res;
     }
     // Test all indexes from given path
-    private function mock_index_of(string $dir) : mixed {
+    private function mock_index_of(string $dir) {
         $dir = rtrim($dir,"/")."/";
         if(is_dir($dir)){
             foreach($this->index as $idx){
@@ -90,13 +90,13 @@ class Auto extends Request {
         return FALSE;
     }
     // Get the first param dir of the first element in params
-    private function mock_params_of(string $dir) : mixed {
+    private function mock_params_of(string $dir) {
         $params = $this->params_list($dir);
         return (count($params) > 0 && is_dir($dir."/_".$params[0])) ? $params[0] : FALSE;
     }
     // Returns a string of the auto path result
     // Return false if no result
-    private function mock() : mixed {
+    private function mock() {
         $path = "";
         $uri_obj = self::getArrayPath();
         $levels = count($uri_obj);
@@ -118,7 +118,7 @@ class Auto extends Request {
                         if($i == $levels-1 && is_string($mock_ext) && file_exists($mock_ext)){
                             $path = $mock_ext;
                         } elseif(is_string($param)){
-                            $this->params[$param] = $uri_obj[$i];
+                            $this->params[preg_replace("/^_/","",$param)] = $uri_obj[$i];
                             $path .= "/_$param";
                             if($i == $levels-1 && is_dir($this->dir.$path)){
                                 $path = $this->mock_index_of($this->dir.$path);
@@ -142,7 +142,7 @@ class Auto extends Request {
         }
         return FALSE;
     }
-    public function path() : mixed {
+    public function path() {
         if(empty($this->path)){
             return $this->mock();
         }

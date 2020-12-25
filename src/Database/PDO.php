@@ -7,7 +7,7 @@ class PDO {
     protected ?string $tb = NULL;
     protected ?array $schema = NULL;
 
-    public function __construct(mixed $config = NULL){
+    public function __construct($config = NULL){
         if(is_array($config)){
             $this->connectByConfig($config); 
         } elseif(is_object($config)) {
@@ -52,10 +52,16 @@ class PDO {
 	}
 	public function columns(string $table) {
 		$columns = [];
-		$rs = $this->pdo->query("SELECT * FROM $table LIMIT 0");
-		for ($i = 0; $i < $rs->columnCount(); $i++) {
-			$col = $rs->getColumnMeta($i);
-			$columns[] = $col['name'];
+		try {
+			$rs = $this->pdo->query("SELECT * FROM $table LIMIT 0");
+			for ($i = 0; $i < $rs->columnCount(); $i++) {
+				$col = $rs->getColumnMeta($i);
+				$columns[] = $col['name'];
+			}
+		} catch (\Exception $e){
+			// 
+		} catch (\Error $e){
+			// 
 		}
 		return $columns;
 	}

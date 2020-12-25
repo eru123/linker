@@ -4,7 +4,7 @@ namespace Linker\Request;
 
 class Query {
     
-    public static function get(string $method = "request", string $str, $callback = null) : mixed {
+    public static function get(string $method = "request", string $str, $callback = null) {
         $keys = explode(" ", trim($str));
 		$fkey = [];
 		foreach ($keys as $key) {
