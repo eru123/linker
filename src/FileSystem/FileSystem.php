@@ -130,4 +130,25 @@ class FileSystem {
 		
         return FALSE;
 	}
+	public static function copy(string $from,string $to,bool $debug = FALSE){
+		$to = rtrim($to,"/")."/";
+		self::mkdir($to);
+		$top = $to.basename($from);
+
+		if(is_file($from)){
+			if($debug === TRUE) echo "Copying $top... ";
+			$res = copy($from,$top);
+			if($debug === TRUE) echo ($res ? 'OK' : 'FAILED').PHP_EOL;
+			return $res;
+		} elseif(is_dir($from)){
+			if($debug === TRUE) echo "Copying $top... ";
+			$res = self::mkdir($top);
+			if($debug === TRUE) echo ($res ? 'OK' : 'FAILED').PHP_EOL;
+			foreach(self::scandir($from) as $frd) self::copy($frd,$top,$debug);
+			return TRUE;
+		} else {
+			if($debug === TRUE) echo "Copying $from ... INVALID";
+		}
+		return FALSE;
+	}
 }
