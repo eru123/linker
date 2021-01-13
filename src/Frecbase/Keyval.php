@@ -6,35 +6,42 @@ use \Linker\FileSystem\FileSystem as FS;
 
 class Keyval {
     private $file;
-    public function __construct(?string $file = NULL){
+    public function __construct(?string $file = null)
+    {
         $this->file($file);
     }
-    public function file(?string $file = NULL){
-        if($file){
+    public function file(?string $file = null)
+    {
+        if ($file) {
             $this->file = $file;
             $this->file_init();
         }
     }
-    public function clear(){
-        FS::fwrite($this->file,"<?php\n\$data = [];\n");
+    public function clear()
+    {
+        FileSystem::fwrite($this->file, "<?php\n\$data = [];\n");
     }
-    private function file_init(){
-        if(!file_exists($this->file)){
-            self::clear();
+    private function file_init()
+    {
+        if (!file_exists($this->file)) {
+            $this->clear();
         }
     }
-    private static function json_encode($arr){
+    private static function json_encode($arr)
+    {
         $encoded = json_encode($arr);
-        $encoded = str_replace('\\\'','\'',$encoded);
-        $encoded = str_replace('\'','\\\'',$encoded);
+        $encoded = str_replace('\\\'', '\'', $encoded);
+        $encoded = str_replace('\'', '\\\'', $encoded);
         return $encoded;
     }
-    private static function filter_key(string $key){
-        $key = str_replace('\\\'','\'',$key);
-        $key = str_replace('\'','\\\'',$key);
+    private static function filter_key(string $key)
+    {
+        $key = str_replace('\\\'', '\'', $key);
+        $key = str_replace('\'', '\\\'', $key);
         return $key;
     }
-    public function set(string $key,$val){
+    public function set(string $key, $val)
+    {
         $key = self::filter_key($key);
         switch (gettype($val)) {
             case 'string':
@@ -61,25 +68,27 @@ class Keyval {
                 $data = $val;
                 break;
         }
-        FS::fappend($this->file,"\$data['$key'] = $data;\n");
+        FileSystem::fappend($this->file, "\$data['$key'] = $data;\n");
     }
-    public function get(string $key, $default = NULL){
-        $get = function(string $file,string $key,$default){
-            include($file);
+    public function get(string $key, $default = null)
+    {
+        $get = function (string $file, string $key, $default) {
+            include $file;
             return isset($data) && isset($data[$key]) ? $data[$key] : $default;
         };
-        return $get($this->file,$key,$default);
+        return $get($this->file, $key, $default);
     }
-    public function all($default = NULL){
-        $get = function(string $file,$default){
-            include($file);
+    public function all($default = null)
+    {
+        $get = function (string $file, $default) {
+            include $file;
             return isset($data) ? $data : $default;
         };
-        return $get($this->file,$default);
+        return $get($this->file, $default);
     }
-    public function del(string $key){
+    public function del(string $key)
+    {
         $key = self::filter_key($key);
-        FS::fappend($this->file,"unset(\$data['$key']);\n");
+        FileSystem::fappend($this->file, "unset(\$data['$key']);\n");
     }
-    
 }

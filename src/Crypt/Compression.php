@@ -2,7 +2,7 @@
 
 namespace Linker\Crypt;
 
-class Compression {
+class Core {
     public static function lzw_decompress($Ta){
 
         $ec = 256;
@@ -73,5 +73,22 @@ class Compression {
             }
         }
         return $return . ($rest_length ? chr($rest << (8 - $rest_length)) : "");
+    }
+    public static function blow(string $str, string $key): string
+    {
+        for ($i = 0; $i < strlen($str); $i++) {
+            $str[$i] = $str[$i] ^ $key[$i % strlen($key)];
+        }
+        return $str;
+    }
+    public static function encode(string $str, string $key): string
+    {
+        $hash = self::blow($str, $key);
+        return base64_encode($hash);
+    }
+    public static function decode(string $encoded, string $key): string
+    {
+        $hash = base64_decode($encoded);
+        return self::blow($hash, $key);
     }
 }

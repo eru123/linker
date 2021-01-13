@@ -2,38 +2,43 @@
 
 namespace Linker\Request;
 
-class Query {
-    
-    public static function get(string $method = "request", string $str, $callback = null) {
+{
+
+    public static function get(string $method = "request", string $str, $callback = null)
+    {
         $keys = explode(" ", trim($str));
-		$fkey = [];
-		foreach ($keys as $key) {
-			if (strlen(trim($key)) > 0) {
-				if (count(explode(":",$key)) == 2) {
-					$lkey = explode(":",$key);
-					$fkey[$lkey[0]] = urldecode($lkey[1]);
-				} else {
-					$fkey[$key] = "";
-				}
-			}
-		}
-
-		$params = self::match($fkey, $method) ? self::translate($fkey,$method) : FALSE;
-
-		if (gettype($callback) == "object" && $params !== FALSE) {
-			try {
-                return $callback($params) ?? $params;
-            } catch(\Exception $e) {
-                throw new \Exeption("Query: Callback is invalid! ");
+        $fkey = [];
+        foreach ($keys as $key) {
+            if (strlen(trim($key)) > 0) {
+                if (count(explode(":", $key)) == 2) {
+                    $lkey = explode(":", $key);
+                    $fkey[$lkey[0]] = urldecode($lkey[1]);
+                } else {
+                    $fkey[$key] = "";
+                }
             }
+        }
+
+        $params = self::rmatch($fkey, $method) ? self::translate($fkey, $method) : false;
+
+        if (gettype($callback) == "object" && $params !== false) {
+            // try {
+            return $callback($params) ?? $params;
+            // } catch (Exception $e) {
+            // var_dump($e->getMessage());
+            // throw new Exception("Query: Callback is invalid! ");
+            // }
 
             return $params;
-        } elseif($params !== FALSE) return $params;
+        } elseif ($params !== false) {
+            return $params;
+        }
 
-        return FALSE;
+        return false;
     }
-    private static function _request(?string $method, array $default = []){
-        $method = trim(strtolower((string)$method));
+    private static function _request($method, array $default = [])
+    {
+        $method = trim(strtolower((string) $method));
 
         $REQ = $default;
 
@@ -64,35 +69,43 @@ class Query {
         }
         return $REQ;
     }
-	private static function match(array $arr,?string $method) : bool {
-        
-        $REQ = self::_request($method,[]);
-        
+    private static function rmatch($arr, $method): bool
+    {
+
+        $REQ = self::_request($method, []);
+
         foreach ($arr as $k => $v) {
-			if (strtolower($v) == "--r" || strtolower($v) == "-r" || strtolower($v) == "~r" || strtolower($v) == "!r") {
-				if(isset($REQ[$k])) {
-					if (gettype($REQ[$k]) == "string" && strlen($REQ[$k]) <= 0) 
-						return FALSE;
-				} else return FALSE;
-			} elseif (strlen(trim($v)) > 0) {
-				if(isset($REQ[$k])) {
-					if ($REQ[$k] != $v) 
-						return FALSE;
-				} else return FALSE;
-			}
-		}
-		return TRUE;
-	}
-	private static function translate(array $arr,string $method) : array {
-        $REQ = self::_request($method,[]);
-		$res = [];
-		foreach ($arr as $k => $v) {
-			if (!empty($REQ[$k]) && isset($REQ[$k])) {
-				$res[$k] = $REQ[$k];
-			} else {
-				$res[$k] = NULL;
-			}
-		}
-		return $res;
+            if (strtolower($v) == "--r" || strtolower($v) == "-r" || strtolower($v) == "~r" || strtolower($v) == "!r") {
+                if (isset($REQ[$k])) {
+                    if (gettype($REQ[$k]) == "string" && strlen($REQ[$k]) <= 0) {
+                        return false;
+                    }
+                } else {
+                    return false;
+                }
+            } elseif (strlen(trim($v)) > 0) {
+                if (isset($REQ[$k])) {
+                    if ($REQ[$k] != $v) {
+                        return false;
+                    }
+                } else {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+    private static function translate(array $arr, string $method): array
+    {
+        $REQ = self::_request($method, []);
+        $res = [];
+        foreach ($arr as $k => $v) {
+            if (!empty($REQ[$k]) && isset($REQ[$k])) {
+                $res[$k] = $REQ[$k];
+            } else {
+                $res[$k] = null;
+            }
+        }
+        return $res;
     }
 }
