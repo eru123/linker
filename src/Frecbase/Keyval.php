@@ -2,7 +2,7 @@
 
 namespace Linker\Frecbase;
 
-use \Linker\FileSystem\FileSystem as FS;
+use \Linker\FileSystem\Core as FileSystem;
 
 class Keyval {
     private $file;

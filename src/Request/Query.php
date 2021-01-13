@@ -2,7 +2,7 @@
 
 namespace Linker\Request;
 
-{
+class Query {
 
     public static function get(string $method = "request", string $str, $callback = null)
     {

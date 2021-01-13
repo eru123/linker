@@ -2,6 +2,8 @@
 
 namespace Linker\Router;
 
+use Linker\Router\Request;
+
 class Auto extends Request {
     private array $params = [];
     private array $index = [];

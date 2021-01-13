@@ -3,7 +3,7 @@
 
 namespace Linker\PDO;
 
-{
+class Model {
     protected $pdo;
     protected $tb;
 
