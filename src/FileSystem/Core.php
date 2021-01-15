@@ -213,7 +213,7 @@ class Core
         $dirArray = explode("/",$dir);
         $dirFixed = "";
         foreach($dirArray as $dirname){
-           $dirFixed .= $dirname;
+           $dirFixed .= $dirname."/";
            self::mkdir($dirFixed);
         }
     }
