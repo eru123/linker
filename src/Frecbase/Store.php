@@ -2,9 +2,9 @@
 
 namespace Linker\Frecbase;
 
-use \Linker\Frecbase\Document\Core;
+use \Linker\Frecbase\StoreCore as Core;
 
-class Document {
+class Store {
     public $dir;
     public $doc;
     public $data = NULL;
