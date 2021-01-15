@@ -16,24 +16,7 @@ class Memory {
         }
         $this->use = $use;
     }
-    public static function toMin(int $min) {
-        return 60 * $min;
-    }
-    public static function toHour(int $hr){
-        return self::toMin($hr * 60);
-    }
-    public static function toDay(int $day){
-        return self::toHour($day * 24);
-    }
-    public static function toWeek(int $week){
-        return self::toDay($week * 7);
-    }
-    public static function toMonth(int $month) {
-        return self::toDay($month * 30);
-    }
-    public static function toYear(int $year){
-        return self::toDay($year * 365);
-    }
+    
     public function set(string $key, $value, int $expiration = 0){
         if($expiration <= 0) $expiration = 86400;
         if($this->use == "apcu" && function_exists("apcu_store")){
