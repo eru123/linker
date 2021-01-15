@@ -22,15 +22,9 @@ class Store {
         $this->dir = $dir;
         return $this;
     }
-    public function directory(string $dir){
-        return $this->dir($dir);
-    }
     public function doc(string $doc){
         $this->doc = $doc;
         return $this;
-    }
-    public function document(string $doc){
-        return $this->doc($doc);
     }
     public function getData($default = NULL){
         $this->core->setDir($this->dir);
