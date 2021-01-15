@@ -209,4 +209,12 @@ class Core
         }
         return false;
     }
+    public static function fixDir(string $dir){
+        $dirArray = explode("/",$dir);
+        $dirFixed = "";
+        foreach($dirArray as $dirname){
+           $dirFixed .= $dirname;
+           self::mkdir($dirFixed);
+        }
+    }
 }
