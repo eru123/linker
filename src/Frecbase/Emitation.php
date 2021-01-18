@@ -49,8 +49,7 @@ class Emitation {
         $file = $this->file_path();
         return (bool) FS::fwrite($file,"<?php \$data=[];\n");
     }
-    private static function json_encode($arr)
-    {
+    private static function json_encode($arr){
         $encoded = json_encode($arr);
         $encoded = str_replace('\\\'', '\'', $encoded);
         $encoded = str_replace('\'', '\\\'', $encoded);
@@ -195,5 +194,68 @@ class Emitation {
             throw new Exception("Failed to create data in table \"$tb\" on database \"$db\".");
         }
         return $this;
+    }
+    public function read_database($default = NULL){
+        $data = $this->get_data();
+        $db = $this->db;
+        return isset($data[$db]) ? $data[$db] : $default;
+    }
+    public function read_table(){
+        $data = $this->get_data();
+        $db = $this->db;
+        $tb = $this->tb;
+        return isset($data[$db]) && isset($data[$db][$tb]) ? $data[$db][$tb] : $default;
+    }
+    public function read_row_id(){
+        $data = $this->get_data();
+        $db = $this->db;
+        $tb = $this->tb;
+        $id = $this->row_key;
+        return isset($data[$db]) && 
+            isset($data[$db][$tb]) && 
+            isset($data[$db][$tb][$id]) ? 
+        $data[$db][$tb][$id] : $default;
+    }
+    public function read_row_field(){
+        $data = $this->get_data();
+        $db = $this->db;
+        $tb = $this->tb;
+        $id = $this->row_key;
+        $col = $this->col_key;
+        return isset($data[$db]) && 
+            isset($data[$db][$tb]) && 
+            isset($data[$db][$tb][$id]) &&
+            isset($data[$db][$tb][$id][$col]) ? 
+        $data[$db][$tb][$id][$col] : $default;
+    }
+    public function update_database_name(){
+
+    }
+    public function update_table_name(){
+
+    }
+    public function update_row_id(){
+
+    }
+    public function update_row_field(){
+
+    }
+    public function update_row_data(){
+
+    }
+    public function update_field_data(){
+
+    }
+    public function delete_database(){
+
+    }
+    public function delete_table(){
+
+    }
+    public function delete_row_id(){
+
+    }
+    public function delete_row_field(){
+
     }
 }
