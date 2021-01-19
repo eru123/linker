@@ -14,7 +14,7 @@ require_once __DIR__."/vendor/autoload.php";
 # Array SearchRow
 SearchRow is mainly made for proccessing array on an SQL like array schema.
 ```php
-use \Linker\Array\SearchRow;
+use Linker\Array\SearchRow;
 
 /**
  * can be use only in the specified multidimensional array format.
@@ -106,9 +106,88 @@ $result = SearchRow::mutiLike($regex,$column,$data,$use_new_key);
 ## Exact
 SearchRow Exact is used to search a data with exact value as the query
 ### Single query
+```php
+$search = "jericho";
+$column = "firstname";
+$use_new_key = FALSE; // set to true if you want to re-keys the elements of $data in the result
+$result = SearchRow::exact($search,$column,$data,$use_new_key);
+/**
+ * $result = 
+ * [
+ *      [
+ *          "id" => "1",
+ *          "firstname" => "jericho",
+ *          "lastname" => "aquino"
+ *      ]
+ * ];
+*/
+```
 ### Multiple query
-
+```php
+$search = [
+    "jericho",
+    "eru"
+];
+$column = "firstname";
+$use_new_key = FALSE; // set to true if you want to re-keys the elements of $data in the result
+$result = SearchRow::mutiExact($search,$column,$data,$use_new_key);
+/**
+ * $result = 
+ * [
+ *      [
+ *          "id" => "1",
+ *          "firstname" => "jericho",
+ *          "lastname" => "aquino"
+ *      ],
+ *      [
+ *          "id" => "2",
+ *          "firstname" => "eru",
+ *          "lastname" => "roraito"
+ *      ]
+ * ];
+*/
+```
 ## Not
 SearchRow Not is opposite to Search Exact, it searches all data that not have the same value as the query
 ### Single query
+```php
+$search = "koko";
+$column = "firstname";
+$use_new_key = FALSE; // set to true if you want to re-keys the elements of $data in the result
+$result = SearchRow::not($search,$column,$data,$use_new_key);
+/**
+ * $result = 
+ * [
+ *      [
+ *          "id" => "1",
+ *          "firstname" => "jericho",
+ *          "lastname" => "aquino"
+ *      ],
+ *      [
+ *          "id" => "2",
+ *          "firstname" => "eru",
+ *          "lastname" => "roraito"
+ *      ]
+ * ];
+*/
+```
 ### Multiple query
+```php
+$search = [
+    "koko",
+    "jericho"
+];
+$column = "firstname";
+$use_new_key = FALSE; // set to true if you want to re-keys the elements of $data in the result
+$result = SearchRow::mutiNot($search,$column,$data,$use_new_key);
+/**
+ * $result = 
+ * [
+ *      [
+ *          "id" => "2",
+ *          "firstname" => "eru",
+ *          "lastname" => "roraito"
+ *      ]
+ * ];
+*/
+```
