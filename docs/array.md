@@ -1,5 +1,5 @@
 # Linker
- - Back to [main page](index)
+Back to [main page](index).
 # Array
 To proccess complex array problems
 # SearchRow
