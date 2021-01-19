@@ -1,0 +1,24 @@
+<IfModule mod_rewrite.c>
+    <IfModule mod_negotiation.c>
+        Options -MultiViews
+    </IfModule>
+
+    RewriteEngine On
+
+    # Handle Front Controller...
+    RewriteRule ^ index.php [L]
+
+    Options -Indexes
+    IndexIgnore *
+    DirectoryIndex index.php
+
+    # Forbidden Files
+    <Files .*>
+        Require all denied
+    </Files>
+    
+    <Files composer.*>
+        Require all denied
+    </Files>
+
+</IfModule>
