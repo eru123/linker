@@ -1,5 +1,7 @@
+# Linker
  - Back to [main page](index)
 # Encryption
+
 Linker encryption class comes in handy on two-way encryption
 ```php
 use Linker\Crypt\Core as Crypt;

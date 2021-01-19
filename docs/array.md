@@ -1,3 +1,4 @@
+# Linker
  - Back to [main page](index)
 # Array
 To proccess complex array problems
