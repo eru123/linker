@@ -1,4 +1,6 @@
+ - Back to [main page](index)
 # Array
+To proccess complex array problems
 # SearchRow
 SearchRow is mainly made for proccessing array on an SQL like array schema.
 ```php

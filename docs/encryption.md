@@ -1,3 +1,4 @@
+ - Back to [main page](index)
 # Encryption
 Linker encryption class comes in handy on two-way encryption
 ```php
@@ -23,7 +24,6 @@ A symmetric-key block cipher
 use Linker\Crypt\Core as Crypt; 
 
 $key = "some_private_key";
-$text = "Hello there!";
 ```
 ### Blowfish Encrypt
 ```php
@@ -42,7 +42,6 @@ Combination of Blowfish and base64 encryption
 use Linker\Crypt\Core as Crypt; 
 
 $key = "some_private_key";
-$text = "Hello there!";
 ```
 ### Blowfish + Base64 Encrypt
 ```php
