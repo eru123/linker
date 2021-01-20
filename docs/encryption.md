@@ -25,8 +25,6 @@ $decrypt = Crypt::lzw_decompress($encrypt);
 ## Blowfish
 A symmetric-key block cipher
 ```php
-use Linker\Crypt\Core as Crypt; 
-
 $key = "some_private_key";
 ```
 ### Blowfish Encrypt
